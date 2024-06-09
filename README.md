@@ -1,5 +1,13 @@
 # MPGram Web
 
+### This fork cuts docker-compose.yaml. A single container is created where all the necessary applications run. This is done to provide the ability to deploy a container on [Render](https://render.com/) for free.
+
+### You can also deploy this container both on your server and on any other hosting.
+
+### IMPORTANT! Follow the instructions regarding the telegram API, otherwise the operation of the container is not guaranteed.
+
+### No changes were made to the remaining files.
+
 Lightweight Telegram web client based on MadelineProto.
 
 Test instance is available at <a href="https://mp.nnchan.ru/">https://mp.nnchan.ru</a> (not guaranteed to run a stable version).
@@ -16,7 +24,35 @@ _It is highly recommended to run your own instance (read on)._
 
 ### Docker
 
-You can deploy your own instance quickly with Docker Compose - [see how](https://github.com/shinovon/mpgram-web/blob/main/docker/README.md).
+On your own server:
+
+1. ```bash
+   git clone https://github.com/Elux414/mpgram-for-render
+   ```
+2. ```bash
+   cd mpgram-for-render
+   ```
+3. ```bash
+   docker build -t mpgram .
+   ```
+4. ```bash
+   docker run --name=mpgram -itd mpgram
+   ```
+5. Access the web interface: http://ip-address
+
+On Render:
+
+Since you need to make changes to api_values.php.example, I would advise you to copy this repository as a fork, so it will be more convenient for you to make changes and deploy the container on Render or other hosting that supports authorization via Github. But Render provides the ability to import an image from Docker Hub, so you can try to build the image according to the instructions above, upload the image to Docker Hub and deploy this image to Render.
+
+1. Create a Web Service on Render
+2. Connect your repository (you should link your Render and Github accounts)
+3. Runtime enviroment shoud be Docker
+4. Instance type - Free
+5. Region - EU or any other you like
+6. Click "Create Web Service"
+7. After building and deploying you can access web site via URL that is in the top left corner of the Render interface
+
+All should be working now.
 
 ### Manual deployment
 
