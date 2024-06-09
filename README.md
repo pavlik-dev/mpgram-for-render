@@ -18,7 +18,7 @@ _It is highly recommended to run your own instance (read on)._
 
 - Generate your own API id by creating a Telegram app at <a href="https://my.telegram.org/apps">https://my.telegram.org/apps</a> 
 - Create `api_value.php` from the `api_values.php.example` using the `api_id` and `api_hash` you generated
-- Create `config.php` from the `config.php.example`
+- Create `config.php` from the `config.php.example` (for Docker container deployment you shouldn't do this)
 
 ## Deployment
 
