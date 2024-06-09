@@ -1,7 +1,19 @@
 FROM ubuntu:latest
 
 RUN apt-get update
+RUN apt-get install software-properties-common -y
+RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
+RUN apt-get update
 RUN apt-get -y --no-install-recommends install php php-fpm php-mbstring php-gd php-gmp php8.3-common nginx curl supervisor && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN pecl install uv-beta
+RUN echo extension=uv.so | tee $(php --ini | sed '/additional .ini/!d;s/.*: //g')/uv.ini
+RUN echo ffi.enable=1 | tee $(php --ini | sed '/additional .ini/!d;s/.*: //g')/ffi.ini
+RUN echo vm.max_map_count=262144 | tee /etc/sysctl.d/40-madelineproto.conf
+RUN cd /tmp
+RUN git clone https://github.com/danog/PrimeModule-ext
+RUN cd PrimeModule-ext && make -j$(nproc) && make install
+RUN cd /root
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY /docker/mpgram_web/php.ini /etc/php/8.3/cli
 COPY /docker/mpgram_web/php.ini /etc/php/8.3/fpm
@@ -12,6 +24,9 @@ COPY /docker/nginx/conf/upstream.conf /etc/nginx/conf.d/
 RUN curl -o /usr/local/etc/browscap.ini http://browscap.org/stream?q=Lite_PHP_BrowsCapINI
 
 COPY . /var/www/mpgram
+
+WORKDIR /var/www/mpgram
+RUN composer install
 
 RUN cp /var/www/mpgram/config.php.example /var/www/mpgram/config.php
 RUN cp /var/www/mpgram/api_values.php.example /var/www/mpgram/api_values.php
