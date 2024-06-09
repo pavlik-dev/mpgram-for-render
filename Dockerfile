@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update
-RUN apt-get -y --no-install-recommends install php php-fpm php-mbstring php-gd php-gmp php8.3-common nginx curl && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN apt-get -y --no-install-recommends install php php-fpm php-mbstring php-gd php-gmp php8.3-common nginx curl supervisor && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 COPY /docker/mpgram_web/php.ini /etc/php/8.3/cli
 COPY /docker/mpgram_web/php.ini /etc/php/8.3/fpm
@@ -16,10 +16,11 @@ COPY . /var/www/mpgram
 RUN cp /var/www/mpgram/config.php.example /var/www/mpgram/config.php
 RUN cp /var/www/mpgram/api_values.php.example /var/www/mpgram/api_values.php
 RUN chmod 777 /var/www/mpgram
-RUN service php8.3-fpm start
+
+COPY /docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 STOPSIGNAL SIGQUIT
-CMD ["nginx","-g","daemon off;"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 EXPOSE 80 443 9000
 
