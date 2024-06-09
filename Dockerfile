@@ -15,7 +15,7 @@ COPY . /var/www/mpgram
 
 RUN cp /var/www/mpgram/config.php.example /var/www/mpgram/config.php
 RUN cp /var/www/mpgram/api_values.php.example /var/www/mpgram/api_values.php
-RUN chmod 777 /var/www/mpgram
+RUN chmod -R 777 /var/www/mpgram
 
 COPY /docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
