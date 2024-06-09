@@ -1,6 +1,6 @@
 # MPGram Web
 
-##### Still in development. Container doesn't work properly! 
+## Still in development. Container doesn't work properly! 
 
 ### This fork cuts docker-compose.yaml. A single container is created where all the necessary applications run. This is done to provide the ability to deploy a container on [Render](https://render.com/) for free.
 
