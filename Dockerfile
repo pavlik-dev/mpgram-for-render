@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update
-RUN apt-get install software-properties-common -y
+RUN apt-get install software-properties-common cron -y
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
 RUN apt-get update
 RUN apt-get -y --no-install-recommends install php php-fpm php-mbstring php-gd php-gmp php8.3-common nginx curl supervisor && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
